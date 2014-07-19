@@ -1,0 +1,16 @@
+## Describes one park; the root element.
+start = park
+
+park = element park
+{ attribute name { text },
+	trail*
+}
+
+## Each trail element describes one trail in the park.
+trail = element trail
+{ attribute climb { "easy" | "medium" | "hard" },
+	attribute distance { text },
+	text
+}
+
+
