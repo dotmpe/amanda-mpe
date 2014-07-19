@@ -1,8 +1,11 @@
 T += example-1
 T += grammar-1
 T += grammar-2
+T += pegjs-1
 
 default: $(T)
+
+.PHONY: $(T)
 
 grammar-1: var/example/park-hikes.rnc 
 	@rnv -c $^
@@ -17,5 +20,5 @@ example-1: var/example/park-hikes.rnc var/example/park-hikes.named.rnc var/examp
 	@rnv -q var/example/park-hikes.named.rnc var/example/park-hikes.1.xml
 	@echo [OK] Example 1
 
-.PHONY: example-1
-
+pegjs-1:
+	node index2.js
