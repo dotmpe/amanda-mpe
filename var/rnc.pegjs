@@ -8,42 +8,43 @@
 - Need to fix whitesspace, translate codes to JS 
 */
 
-start
-	= topLevel
+start = topLevel
+
+empty = [\s]* eol
+comment = "#" [^\n]* eol
+
+eol = "\n"
 
 // topLevel  ::=  	decl* (pattern | grammarContent*)
+topLevel = decl* ( pattern / grammarContent* )
 
-topLevel
-	= literalSegment
 
 decl
-	= "namespace" identifierOrKeyword "=" namespaceURILiteral
-	/ "default" "namespace" identifierOrKeyword ? "=" namespaceURILiteral
-	/ "datatypes" identifierOrKeyword "=" literal
+	= ( "namespace" identifierOrKeyword "=" namespaceURILiteral )
+	/ ( "default" "namespace" identifierOrKeyword ? "=" namespaceURILiteral )
+	/ ( "datatypes" identifierOrKeyword "=" literal )
 
 pattern 
-	= "element" nameClass "{" pattern "}"
-	/ "attribute" nameClass "{" pattern "}"
-/*
-	/ pattern ( "," pattern ) +
-	/ pattern ( "&" pattern ) +
-	/ pattern ( "/" pattern ) +
-	/ pattern "?"
-	/ pattern "*"
-	/ pattern "+"
-	/ "list" "{" pattern "}"
-	/ "mixed" "{" pattern "}"
-	/ identifier
-	/ "parent" identifier
+	= ( "element" nameClass "{" pattern "}" )
+	/ ( "attribute" nameClass "{" pattern "}" )
+//	/ ( pattern ( "," pattern ) + )
+//	/ ( pattern ( "&" pattern ) + )
+//	/ ( pattern ( "/" pattern ) + )
+//	/ ( pattern "?" )
+//	/ ( pattern "*" )
+//	/ ( pattern "+" )
+//	/ ( "list" "{" pattern "}" )
+//	/ ( "mixed" "{" pattern "}" )
+	/ ( identifier )
+	/ ( "parent" identifier )
 	/ "empty"
 	/ "text"
-	/ datatypeName ? datatypeValue
-	/ datatypeName ( "{" param* "}" ) ? ( exceptPattern ) ?
+	/ ( datatypeName ? datatypeValue )
+	/ ( datatypeName ( "{" param* "}" ) ? ( exceptPattern ) ? )
 	/ "notAllowed"
-	/ "external" anyURILiteral ( inherit ) ? 
-	/ "grammar" "{" grammarContent * "}"
-	/ "(" pattern ")"
-*/
+	/ ( "external" anyURILiteral ( inherit ) ?  )
+	/ ( "grammar" "{" grammarContent * "}" )
+	/ ( "(" pattern ")" )
 
 param
 	= identifierOrKeyword "=" literal
@@ -52,17 +53,17 @@ exceptPattern
 	= "-" pattern
 
 grammarContent
-	= start
+	= startDecl
 	/ define
-	/ "div" "{" grammarContent* "}"
-	/ "include" anyURILiteral inherit ?  ( "{" includeContent* "}" ) ?
+	/ ( "div" "{" grammarContent* "}" )
+	/ ( "include" anyURILiteral inherit ?  ( "{" includeContent* "}" ) ? )
 
 includeContent
 	= define
-	/ start
-	/ "div" "{" includeContent* "}"
+	/ startDecl
+	/ ( "div" "{" includeContent* "}" )
 
-start
+startDecl
 	= "start" assignMethod pattern
 
 define
@@ -75,8 +76,8 @@ assignMethod
 
 nameClass
 	= name
-	/ nsName exceptNameClass ?
-	/ anyName exceptNameClass ?
+	/ ( nsName exceptNameClass ? )
+	/ ( anyName exceptNameClass ? )
 /*
 	/ ( nameClass "|" nameClass )
 	/ "(" nameClass ")"
@@ -131,10 +132,10 @@ literal
 	= literalSegment ( "~" literalSegment ) +
 
 literalSegment
-	= '"' ( Char ! ('"' / newline ))* '"'
-	/ "'" ( Char ! ("'" / newline ))* "'"
-	/ '"""' ( '"' ? '"' ? ( Char ! '"' ))* '"""'
-	/ "'''" ( "'" ? "'" ? ( Char ! "'" ))* "'''"
+	= ( '"' ( Char ! ('"' / newline ))* '"' )
+	/ ( "'" ( Char ! ("'" / newline ))* "'" )
+	/ ( '"""' ( '"' ? '"' ? ( Char ! '"' ))* '"""' )
+	/ ( "'''" ( "'" ? "'" ? ( Char ! "'" ))* "'''" )
 
 keyword
 	= "attribute"
@@ -158,22 +159,23 @@ keyword
 	/ "token"
 
 Char
-	= [a-zA-Z]+
+	= [a-zA-Z]
 // Char   ::=   	#x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]	
 
 newline
 	= "\n"
 
 NCName
-	= Name * ! ( Char * ":" Char * )
+	= Name 
+//! ( Char * ":" Char * )
 Name
-	= NameStartChar ( NameChar )*
+	= NameStartChar NameChar*
 Names
-	= Name ( " " Name )*
+	= Name ( [\s]+ Name )*
 Nmtoken
 	= ( NameChar )+
 Nmtokens
-	= Nmtoken ( " " Nmtoken )*
+	= Nmtoken ( [\s]+ Nmtoken )*
 NameStartChar
 	= ":"
 	/ [A-Z]

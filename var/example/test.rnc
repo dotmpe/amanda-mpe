@@ -1,0 +1,2 @@
+start = park
+park = element park { empty }
