@@ -22,3 +22,4 @@ example-1: var/example/park-hikes.rnc var/example/park-hikes.named.rnc var/examp
 
 pegjs-1:
 	node index2.js
+
