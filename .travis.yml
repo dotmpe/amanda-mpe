@@ -1,14 +1,24 @@
 # FIXME: depends on rnv
 #
 language: node_js
+
 node_js:
   - "0.12"
+
+addons:
+  apt:
+    packages:
+      - rnv
+
+env:
+  global: []
+  matrix:
+  - NODE_ENV=
+#  - NODE_ENV=testing
+#  - NODE_ENV=production
+
 branches:
   only:
   - master
   - /^v[0-9]+.[0-9]+.[0-9]+$
-env:
-  - NODE_ENV=
-  - NODE_ENV=testing
-#  - NODE_ENV=production
 
