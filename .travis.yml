@@ -1,4 +1,4 @@
-script: echo "FIXME: depends on rnv, but not installable from Apt "
+script: "echo # FIXME: depends on rnv, but not installable from Apt "
 #
 language: node_js
 
