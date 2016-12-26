@@ -1,4 +1,4 @@
-# FIXME: depends on rnv
+script: echo "FIXME: depends on rnv, but not installable from Apt "
 #
 language: node_js
 
@@ -7,8 +7,8 @@ node_js:
 
 addons:
   apt:
-    packages:
-      - rnv
+    packages: []
+#       - rnv
 
 env:
   global: []
